@@ -86,13 +86,21 @@ export default Component.extend({
     return input;
   },
 
+  _readAppropriateValue() {
+    if (get(this, 'type') === 'checkbox') {
+      return get(this, 'checked');
+    } else {
+      return get(this, 'value');
+    }
+  },
+
   init() {
     this._super(...arguments);
-    this._sanitizedValue = get(this, 'value') || get(this, 'checked');
+    this._sanitizedValue = this._readAppropriateValue();
   },
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this._processNewValue.call(this, 'update', get(this, 'value') || get(this, 'checked'));
+    this._processNewValue.call(this, 'update', this._readAppropriateValue());
   }
 });
